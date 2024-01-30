@@ -402,6 +402,10 @@ set(OPENVDB_LIBRARY_IO_INCLUDE_FILES
   io/TempFile.h
 )
 
+set(OPENVDB_LIBRARY_ADAPTIVE_INCLUDE_FILES
+  adaptive/AdaptiveGrid.h
+)
+
 set(OPENVDB_LIBRARY_MATH_INCLUDE_FILES
   math/BBox.h
   math/ConjGradient.h

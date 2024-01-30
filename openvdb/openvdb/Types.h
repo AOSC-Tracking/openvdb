@@ -237,6 +237,17 @@ using make_index_sequence =
 ////////////////////////////////////////
 
 
+template<typename TreeT>
+struct TreeTraits
+{
+    static const bool IsSparse = false;
+    static const bool IsAdaptive = false;
+};
+
+
+////////////////////////////////////////
+
+
 template<typename T, bool = IsSpecializationOf<T, math::Vec2>::value ||
                             IsSpecializationOf<T, math::Vec3>::value ||
                             IsSpecializationOf<T, math::Vec4>::value>

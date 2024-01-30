@@ -492,24 +492,34 @@ Index64 countActiveTiles(const TreeT& tree, bool threaded)
 template <typename TreeT>
 Index64 memUsage(const TreeT& tree, bool threaded)
 {
-    count_internal::MemUsageOp<TreeT> op(true);
-    tree::DynamicNodeManager<const TreeT> nodeManager(tree);
-    nodeManager.reduceTopDown(op, threaded);
-    return op.mCount + sizeof(tree);
+    if constexpr (TreeTraits<TreeT>::IsSparse) {
+        count_internal::MemUsageOp<TreeT> op(true);
+        tree::DynamicNodeManager<const TreeT> nodeManager(tree);
+        nodeManager.reduceTopDown(op, threaded);
+        return op.mCount + sizeof(tree);
+    } else if constexpr (TreeTraits<TreeT>::IsAdaptive) {
+        return 0;
+    }
+    OPENVDB_THROW(NotImplementedError, "");
 }
 
 template <typename TreeT>
 Index64 memUsageIfLoaded(const TreeT& tree, bool threaded)
 {
-    /// @note  For numeric (non-point) grids this really doesn't need to
-    ///   traverse the tree and could instead be computed from the node counts.
-    ///   We do so anyway as it ties this method into the tree data structure
-    ///   which makes sure that changes to the tree/nodes are reflected/kept in
-    ///   sync here.
-    count_internal::MemUsageOp<TreeT> op(false);
-    tree::DynamicNodeManager<const TreeT> nodeManager(tree);
-    nodeManager.reduceTopDown(op, threaded);
-    return op.mCount + sizeof(tree);
+    if constexpr (TreeTraits<TreeT>::IsSparse) {
+        /// @note  For numeric (non-point) grids this really doesn't need to
+        ///   traverse the tree and could instead be computed from the node counts.
+        ///   We do so anyway as it ties this method into the tree data structure
+        ///   which makes sure that changes to the tree/nodes are reflected/kept in
+        ///   sync here.
+        count_internal::MemUsageOp<TreeT> op(false);
+        tree::DynamicNodeManager<const TreeT> nodeManager(tree);
+        nodeManager.reduceTopDown(op, threaded);
+        return op.mCount + sizeof(tree);
+    } else if constexpr (TreeTraits<TreeT>::IsAdaptive) {
+        return 0;
+    }
+    OPENVDB_THROW(NotImplementedError, "");
 }
 
 template <typename TreeT>

@@ -2059,6 +2059,22 @@ Tree<RootNodeType>::print(std::ostream& os, int verboseLevel) const
 }
 
 } // namespace tree
+
+
+////////////////////////////////////////
+
+
+template<typename NodeT>
+struct TreeTraits<tree::Tree<NodeT>>
+{
+    static const bool IsSparse = true;
+    static const bool IsAdaptive = false;
+};
+
+
+////////////////////////////////////////
+
+
 } // namespace OPENVDB_VERSION_NAME
 } // namespace openvdb
 
