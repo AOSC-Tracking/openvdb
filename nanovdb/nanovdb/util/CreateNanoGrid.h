@@ -118,10 +118,10 @@ template <typename> struct MapToNano;
 /// @return Handle to the destination NanoGrid
 template<typename BufferT = HostBuffer>
 GridHandle<BufferT>
-openToNanoVDB(const openvdb::GridBase::Ptr& base,
-              StatsMode                     sMode = StatsMode::Default,
-              ChecksumMode                  cMode = ChecksumMode::Default,
-              int                           verbose = 0);
+openToNanoVDB(const openvdb::GridBase::ConstPtr& base,
+              StatsMode                          sMode = StatsMode::Default,
+              ChecksumMode                       cMode = ChecksumMode::Default,
+              int                                verbose = 0);
 #endif
 
 //================================================================================================
@@ -2026,10 +2026,10 @@ createNanoGrid(const SrcGridT &srcGrid,
 #if defined(NANOVDB_USE_OPENVDB) && !defined(__CUDACC__)
 template<typename BufferT>
 GridHandle<BufferT>
-openToNanoVDB(const openvdb::GridBase::Ptr& base,
-              StatsMode                     sMode,
-              ChecksumMode                  cMode,
-              int                           verbose)
+openToNanoVDB(const openvdb::GridBase::ConstPtr& base,
+              StatsMode                          sMode,
+              ChecksumMode                       cMode,
+              int                                verbose)
 {
     // We need to define these types because they are not defined in OpenVDB
     using openvdb_Vec4fTree = typename openvdb::tree::Tree4<openvdb::Vec4f, 5, 4, 3>::Type;
